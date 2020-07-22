@@ -1,0 +1,283 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example based on the consumption-savings in infinite-horizon with a permanent-income-shock (and no borrowing constraint).</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-06-12"><meta name="DC.source" content="MultiplicativePermanentIncomeShocks.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Example based on the consumption-savings in infinite-horizon with a permanent-income-shock (and no borrowing constraint).</h1><!--introduction--><p>The example is made more complicated that the basic infinite-horizon consumption-savings by the stochastic permanent income shocks. Example suggested by Chris Carroll, and taken from Carroll (2019) - Theoretical Foundations of Buffer Stock Saving</p><p>The original model is <img src="MultiplicativePermanentIncomeShocks_eq11030185860176334578.png" alt="$$V_t(a_t, \psi_t, \theta_t)=\max_{a_{t+1}} \frac{c_t^{1-\gamma}}{1-\gamma} + \beta E[V_{t+1}(a_{t+1}, \psi_t, \theta_t)] $$"> subject to <img src="MultiplicativePermanentIncomeShocks_eq16550140425724908982.png" alt="$$c_t+a_{t+1} = Ra_t + P_t \theta_t $$"> <img src="MultiplicativePermanentIncomeShocks_eq05903956861287557668.png" alt="$$ P_t = \psi_t g P_{t-1} $$"> where <img src="MultiplicativePermanentIncomeShocks_eq13102256536823661017.png" alt="$\psi_t$"> is iid log-normally distributed, and <img src="MultiplicativePermanentIncomeShocks_eq15610513992058087561.png" alt="$\theta_t$"> combines a mass-point at zero (unemployment) with <img src="MultiplicativePermanentIncomeShocks_eq03319118804710354828.png" alt="$\hat{\theta}_t$"> which is iid log-normally distributed (more explicit description below).</p><p>So <img src="MultiplicativePermanentIncomeShocks_eq08422257486649890878.png" alt="$c$"> is consumption; <img src="MultiplicativePermanentIncomeShocks_eq05508344529756732484.png" alt="$a$"> is assets; <img src="MultiplicativePermanentIncomeShocks_eq03442895190380135198.png" alt="$R$"> is the interest rate; <img src="MultiplicativePermanentIncomeShocks_eq17850806925672146238.png" alt="$P_t \theta_t$"> is earnings. Notice that earnings contains a permanent component, <img src="MultiplicativePermanentIncomeShocks_eq03526020502875914015.png" alt="$P_t$">, and a transitory component <img src="MultiplicativePermanentIncomeShocks_eq15610513992058087561.png" alt="$\theta_t$">, and that the permanent component growths at a combination of a deterministic growth rate <img src="MultiplicativePermanentIncomeShocks_eq07585311203459331132.png" alt="$g$"> and a permanent shock <img src="MultiplicativePermanentIncomeShocks_eq13102256536823661017.png" alt="$\psi_t$">.</p><p>In it's current form the value function depends on time, but if we just divide the state space in time t by the permanent income <img src="MultiplicativePermanentIncomeShocks_eq03526020502875914015.png" alt="$P_t$"> then it turns out there is a time independent value function in the resulting space. Doing this also affects the discount rates. Carroll (2019) provides proof for this model, intuition (complex stochastic version) of the same logic when doing this in Ramsey growth model (Solow growth model but making the consumption-savings problem a choice).</p><p>The normalized model is <img src="MultiplicativePermanentIncomeShocks_eq11051231140520530939.png" alt="$$ V(a, \psi, \theta)=\max_{a'} \frac{c^{1-\gamma}}{1-\gamma} \beta E[(g \psi')^{1-\gamma} V(a', \psi', \theta')]$">$ subject to <img src="MultiplicativePermanentIncomeShocks_eq11700659038700970966.png" alt="$$c+a' = Ra/(\psi \theta) + \theta $$"> where the prime (') indicates next period. There are two ways to think of the <img src="MultiplicativePermanentIncomeShocks_eq09081050089252474366.png" alt="$Ra/(\psi \theta)$"> term: that <img src="MultiplicativePermanentIncomeShocks_eq05508344529756732484.png" alt="$a$"> is denominated in last period units and so <img src="MultiplicativePermanentIncomeShocks_eq01789533139146582869.png" alt="$a/(\psi \theta)$"> is adjustment into this period units, or that <img src="MultiplicativePermanentIncomeShocks_eq05508344529756732484.png" alt="$a$"> is in this period units, and <img src="MultiplicativePermanentIncomeShocks_eq16609975784475311630.png" alt="$R/(\psi \theta)$"> is the <i>growth-adjusted return on assets</i>.</p><p>The precise setup for the shocks is as follows:</p><div><ul><li>Permanent shock <img src="MultiplicativePermanentIncomeShocks_eq01982406464486259838.png" alt="$\psi$"> is log-normally distributed as: <img src="MultiplicativePermanentIncomeShocks_eq02530818667373356895.png" alt="$ln \psi \sim N(0,\sigma_{\psi})$"></li><li>Transitory shock <img src="MultiplicativePermanentIncomeShocks_eq08288499342375314727.png" alt="$\theta$"> is distributed as follows: <img src="MultiplicativePermanentIncomeShocks_eq08966403130693755952.png" alt="$\theta=0$"> with probability <img src="MultiplicativePermanentIncomeShocks_eq05371638286043275527.png" alt="$\mu$"> and <img src="MultiplicativePermanentIncomeShocks_eq10598306656537358097.png" alt="$\theta=\hat{\theta}/(1-\mu)$"> with probability <img src="MultiplicativePermanentIncomeShocks_eq15124098656622367526.png" alt="$1-\mu$">, where <img src="MultiplicativePermanentIncomeShocks_eq08018606805564927961.png" alt="$\hat{\theta}$"> is log-normally distributed as <img src="MultiplicativePermanentIncomeShocks_eq00888339052820502669.png" alt="$ln \hat{\theta} \sim N(0,\sigma_{\hat{\theta}})$"></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Because of the permanent shocks entering the discount factor, we need to use the following vfoptions</a></li><li><a href="#2">Grid sizes:</a></li><li><a href="#4">Declare the model parameters</a></li><li><a href="#5">Create the grids</a></li><li><a href="#7">Set up the 'exotic preferences' to be used (3: discount factor depends on exogenous state)</a></li><li><a href="#9">Set up the return function</a></li><li><a href="#10">Do the value function iteration</a></li><li><a href="#11">Some further comments on this setup, not needed for computations above, but may be of interest</a></li></ul></div><h2 id="1">Because of the permanent shocks entering the discount factor, we need to use the following vfoptions</h2><pre class="codeinput">vfoptions.exoticpreferences=3; <span class="comment">% The discount factor depends on next period exogenous state</span>
+</pre><h2 id="2">Grid sizes:</h2><pre class="codeinput">n_a=101; <span class="comment">% Grid for assets</span>
+n_psi=5; <span class="comment">% Grid for multiplicative permanent income shock</span>
+n_theta=7; <span class="comment">% Grid for transitory income shock</span>
+n_z=[n_psi, n_theta];
+</pre><p>I have deliberately chosen grids that likely to not have enough points so that this example can be easily and quickly run on older machines.</p><h2 id="4">Declare the model parameters</h2><pre class="codeinput">Params.g=1.03; <span class="comment">% Permanent income deterministic growth rate</span>
+Params.R=1.04; <span class="comment">% Interest rate</span>
+Params.beta=0.96; <span class="comment">% Time preference factor</span>
+Params.gamma=2; <span class="comment">% Coefficient of relative risk aversion</span>
+<span class="comment">% The exogenous shocks are both just iid</span>
+Params.sigma_psi=0.01; <span class="comment">% Standard deviation of log permanent shock</span>
+Params.sigma_theta=0.01; <span class="comment">% Standard deviation of log transitory shock</span>
+<span class="comment">% But theta is modified to allow a zero value ('unemployment') with some probability</span>
+Params.theta_probunemp=0.005; <span class="comment">% Probability of unemployment (called $\mu$) above</span>
+Params.theta_unemp=0; <span class="comment">% Income when unemployed</span>
+</pre><h2 id="5">Create the grids</h2><pre class="codeinput">a_grid=linspace(0,15,n_a)';
+
+tauchenq=2;
+<span class="comment">% Create the grids for psi</span>
+[psi_grid, pi_psi]=TauchenMethod(0,Params.sigma_psi^2,0,n_psi,tauchenq); <span class="comment">% First zero is the mean, second zero is the autocorrelation</span>
+psi_grid=exp(psi_grid);
+<span class="comment">% Create the grids for theta</span>
+[thetahat_grid, pi_theta]=TauchenMethod(0,Params.sigma_theta^2,0,n_theta-1,tauchenq); <span class="comment">% First zero is the mean, second zero is the autocorrelation</span>
+theta_grid=[0; exp(thetahat_grid)/(1-Params.theta_probunemp)]; <span class="comment">% Include the unemployment state, and normalize (divide by (1-Params.theta_probunemp)) to ensure E(theta)=1.</span>
+pi_theta=[pi_theta*(1-Params.theta_probunemp),Params.theta_probunemp*ones(n_theta-1,1); pi_theta(1,:)*(1-Params.theta_probunemp),Params.theta_probunemp]; <span class="comment">% The rows are all identical as iid (hence why the final row is created by adding a copy of row 1)</span>
+<span class="comment">% Put the exogenous grids and the transition matrices together</span>
+z_grid=[psi_grid; theta_grid];
+pi_z=kron(pi_theta, pi_psi); <span class="comment">% Is always kron() of shocks in reverse order</span>
+</pre><p>Note: there will be a tiny numerical error introduced as neither exp(psi_grid) nor exp(thetahat_grid) will be exactly 1 in expectation. You could easily fix by normalizing these. For this example I prefer to leave them as is as a 'cautionary example' of common but obscure mistakes.</p><h2 id="7">Set up the 'exotic preferences' to be used (3: discount factor depends on exogenous state)</h2><pre class="codeinput">Params.ggamma=Params.g^(1-Params.gamma);
+Params.psigamma=reshape(psi_grid.*ones(1,n_theta),[1,n_psi*n_theta]).^(1-Params.gamma); <span class="comment">% Depends on zprime (next period z), and hence based on psi_grid'</span>
+DiscountFactorParamNames={<span class="string">'beta'</span>,<span class="string">'ggamma'</span>,<span class="string">'psigamma'</span>}; <span class="comment">% The 'state-dependent discount parameters'</span>
+</pre><p>Note: VFI Toolkit allows for these discount factors to be a matrix, so they would depend on both this period and next-period exogenous state. If you pass a vector it is assumed the dependence is on next-period exogenous state if the vector has just one row and multiple columns; dependence on this-period exogenous state if the vector has multiple rows and one column.</p><h2 id="9">Set up the return function</h2><pre class="codeinput">ReturnFn=@(aprime,a,psi,theta,R,g,gamma) MultiplicativePermanentIncomeShocks_ReturnFn(aprime,a,psi,theta,R,g,gamma)
+ReturnFnParamNames={<span class="string">'R'</span>,<span class="string">'g'</span>,<span class="string">'gamma'</span>};
+</pre><pre class="codeoutput">
+ReturnFn =
+
+  function_handle with value:
+
+    @(aprime,a,psi,theta,R,g,gamma)MultiplicativePermanentIncomeShocks_ReturnFn(aprime,a,psi,theta,R,g,gamma)
+
+</pre><h2 id="10">Do the value function iteration</h2><pre class="codeinput">vfoptions.verbose=1;
+V0=zeros(n_a,n_z(1),n_z(2),<span class="string">'gpuArray'</span>);
+[V, Policy]=ValueFnIter_Case1(V0, 0,n_a,n_z,0,a_grid,z_grid, pi_z, ReturnFn, Params, DiscountFactorParamNames, ReturnFnParamNames, vfoptions);
+</pre><pre class="codeoutput">
+vfoptions = 
+
+  struct with fields:
+
+              exoticpreferences: 3
+                        verbose: 1
+                     solnmethod: 'purediscretization'
+                       parallel: 2
+                   returnmatrix: 2
+                      lowmemory: 0
+                      tolerance: 1.0000e-09
+                        howards: 80
+                     maxhowards: 500
+                    polindorval: 1
+        policy_forceintegertype: 0
+    piz_strictonrowsaddingtoone: 0
+
+Creating return fn matrix
+Time to create return fn matrix:   0.0896 
+Starting Value Function
+Time to solve for Value Fn and Policy:   2.8872 
+Transforming Value Fn and Optimal Policy matrices back out of Kronecker Form
+Time to create UnKron Value Fn and Policy:   0.0019 
+</pre><h2 id="11">Some further comments on this setup, not needed for computations above, but may be of interest</h2><p>We have here solved the renormalized value function. The VFI Toolkit codes for computing the stationary distribution of agents and the general equilibrium could also be used to find the normalized solutions. The time series simulations could then be used, and since they would automatically include simulated values for the <img src="MultiplicativePermanentIncomeShocks_eq01982406464486259838.png" alt="$\psi$"> and <img src="MultiplicativePermanentIncomeShocks_eq08288499342375314727.png" alt="$\theta$"> shocks, and since <img src="MultiplicativePermanentIncomeShocks_eq07585311203459331132.png" alt="$g$"> is known, it would be trivial to generate versions of this that did not include the normalization (that is, e.g., simulated time series data for the original model); in fact, judicious definition of the variables to simulate would do this directly.</p><p>The actual distributions of <img src="MultiplicativePermanentIncomeShocks_eq13102256536823661017.png" alt="$\psi_t$"> and <img src="MultiplicativePermanentIncomeShocks_eq03319118804710354828.png" alt="$\hat{\theta}_t$"> are unimportant, but that <img src="MultiplicativePermanentIncomeShocks_eq00317388935928422232.png" alt="$E[\psi_t]=1$"> and <img src="MultiplicativePermanentIncomeShocks_eq00648853079550275779.png" alt="$E[\theta_t]=1$"> are important. As is that the supports of both <img src="MultiplicativePermanentIncomeShocks_eq13102256536823661017.png" alt="$\psi_t$"> and <img src="MultiplicativePermanentIncomeShocks_eq15610513992058087561.png" alt="$\theta_t$"> are bounded (untrue in principle of the log-normal, but we will use quadrature, so will be true in actual computed example). Notice that both of these shocks are normalized so the mean equals one assumptions are made without loss of generalization (the mean of <img src="MultiplicativePermanentIncomeShocks_eq13102256536823661017.png" alt="$\psi_t$"> could be moved to <img src="MultiplicativePermanentIncomeShocks_eq07585311203459331132.png" alt="$g$">, and of <img src="MultiplicativePermanentIncomeShocks_eq08288499342375314727.png" alt="$\theta$"> could be moved into <img src="MultiplicativePermanentIncomeShocks_eq02661806082982697695.png" alt="$P$">). It is needed for the underlying theory in Carroll (2019).</p><p>While the model is here solved as having three states (one endogeneous state a, and two exogenous states <img src="MultiplicativePermanentIncomeShocks_eq01982406464486259838.png" alt="$\psi$"> and <img src="MultiplicativePermanentIncomeShocks_eq08288499342375314727.png" alt="$\theta$">) in principle you can rewrite the problem as having a single state (the buffer savings stock), and from the perspective of deriving theoretical results this is useful and is the approach taken in Carroll (2019). From the perspective of solving the model using the VFI Toolkit it is much easier to impose the clear distinction between exogenous and endogenous variables. Adding further complications to the model would also break the ability to reduce the model to a single state (the buffer savings stock), and so distinguising them as done here would then become necessary.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example based on the consumption-savings in infinite-horizon with a permanent-income-shock (and no borrowing constraint). 
+% The example is made more complicated that the basic infinite-horizon consumption-savings by the stochastic permanent income shocks.
+% Example suggested by Chris Carroll, and taken from Carroll (2019) - Theoretical Foundations of Buffer Stock Saving
+%
+%
+% The original model is
+% $$V_t(a_t, \psi_t, \theta_t)=\max_{a_{t+1}} \frac{c_t^{1-\gamma}}{1-\gamma} + \beta E[V_{t+1}(a_{t+1}, \psi_t, \theta_t)] $$
+% subject to
+% $$c_t+a_{t+1} = Ra_t + P_t \theta_t $$
+% $$ P_t = \psi_t g P_{t-1} $$
+% where $\psi_t$ is iid log-normally distributed, and $\theta_t$ combines a
+% mass-point at zero (unemployment) with $\hat{\theta}_t$ which is
+% iid log-normally distributed (more explicit description below).
+%
+% So $c$ is consumption; $a$ is assets; $R$ is the interest rate; $P_t
+% \theta_t$ is earnings. Notice that earnings contains a permanent
+% component, $P_t$, and a transitory component $\theta_t$, and that the permanent
+% component growths at a combination of a deterministic growth rate $g$ and a permanent shock $\psi_t$.
+%
+% In it's current form the value function depends on time, but if we just
+% divide the state space in time t by the permanent income $P_t$ then it
+% turns out there is a time independent value function in the resulting
+% space. Doing this also affects the discount rates. Carroll (2019)
+% provides proof for this model, intuition (complex stochastic version) of the same 
+% logic when doing this in Ramsey growth model (Solow growth model but
+% making the consumption-savings problem a choice).
+% 
+% The normalized model is
+% $$ V(a, \psi, \theta)=\max_{a'} \frac{c^{1-\gamma}}{1-\gamma} \beta E[(g \psi')^{1-\gamma} V(a', \psi', \theta')]$$
+% subject to
+% $$c+a' = Ra/(\psi \theta) + \theta $$
+% where the prime (') indicates next period. There are two ways to think of
+% the $Ra/(\psi \theta)$ term: that $a$ is denominated in last period units
+% and so $a/(\psi \theta)$ is adjustment into this period units, or that
+% $a$ is in this period units, and $R/(\psi \theta)$ is the
+% _growth-adjusted return on assets_.
+%
+% The precise setup for the shocks is as follows: 
+%
+% * Permanent shock $\psi$ is log-normally distributed as: $ln \psi \sim N(0,\sigma_{\psi})$
+% * Transitory shock $\theta$ is distributed as follows: $\theta=0$ with probability $\mu$ and $\theta=\hat{\theta}/(1-\mu)$ with probability $1-\mu$, where $\hat{\theta}$ is log-normally distributed as $ln \hat{\theta} \sim N(0,\sigma_{\hat{\theta}})$ 
+%
+
+%% Because of the permanent shocks entering the discount factor, we need to use the following vfoptions
+vfoptions.exoticpreferences=3; % The discount factor depends on next period exogenous state
+
+%% Grid sizes:
+n_a=101; % Grid for assets
+n_psi=5; % Grid for multiplicative permanent income shock
+n_theta=7; % Grid for transitory income shock
+n_z=[n_psi, n_theta];
+
+%%
+% I have deliberately chosen grids that likely to not have enough points so
+% that this example can be easily and quickly run on older machines.
+
+%% Declare the model parameters
+Params.g=1.03; % Permanent income deterministic growth rate
+Params.R=1.04; % Interest rate
+Params.beta=0.96; % Time preference factor
+Params.gamma=2; % Coefficient of relative risk aversion
+% The exogenous shocks are both just iid
+Params.sigma_psi=0.01; % Standard deviation of log permanent shock
+Params.sigma_theta=0.01; % Standard deviation of log transitory shock
+% But theta is modified to allow a zero value ('unemployment') with some probability
+Params.theta_probunemp=0.005; % Probability of unemployment (called $\mu$) above
+Params.theta_unemp=0; % Income when unemployed
+
+%% Create the grids
+a_grid=linspace(0,15,n_a)';
+
+tauchenq=2;
+% Create the grids for psi
+[psi_grid, pi_psi]=TauchenMethod(0,Params.sigma_psi^2,0,n_psi,tauchenq); % First zero is the mean, second zero is the autocorrelation
+psi_grid=exp(psi_grid);
+% Create the grids for theta
+[thetahat_grid, pi_theta]=TauchenMethod(0,Params.sigma_theta^2,0,n_theta-1,tauchenq); % First zero is the mean, second zero is the autocorrelation
+theta_grid=[0; exp(thetahat_grid)/(1-Params.theta_probunemp)]; % Include the unemployment state, and normalize (divide by (1-Params.theta_probunemp)) to ensure E(theta)=1.
+pi_theta=[pi_theta*(1-Params.theta_probunemp),Params.theta_probunemp*ones(n_theta-1,1); pi_theta(1,:)*(1-Params.theta_probunemp),Params.theta_probunemp]; % The rows are all identical as iid (hence why the final row is created by adding a copy of row 1)
+% Put the exogenous grids and the transition matrices together
+z_grid=[psi_grid; theta_grid];
+pi_z=kron(pi_theta, pi_psi); % Is always kron() of shocks in reverse order
+%%
+% Note: there will be a tiny numerical error introduced as neither
+% exp(psi_grid) nor exp(thetahat_grid) will be exactly 1 in expectation.
+% You could easily fix by normalizing these. For this example I prefer to
+% leave them as is as a 'cautionary example' of common but obscure mistakes.
+
+
+%% Set up the 'exotic preferences' to be used (3: discount factor depends on exogenous state)
+Params.ggamma=Params.g^(1-Params.gamma);
+Params.psigamma=reshape(psi_grid.*ones(1,n_theta),[1,n_psi*n_theta]).^(1-Params.gamma); % Depends on zprime (next period z), and hence based on psi_grid'
+DiscountFactorParamNames={'beta','ggamma','psigamma'}; % The 'state-dependent discount parameters'
+%%
+% Note: VFI Toolkit allows for these discount factors to be a matrix, so they
+% would depend on both this period and next-period exogenous state. If you
+% pass a vector it is assumed the dependence is on next-period exogenous
+% state if the vector has just one row and multiple columns; dependence on this-period exogenous 
+% state if the vector has multiple rows and one column.
+
+%% Set up the return function
+ReturnFn=@(aprime,a,psi,theta,R,g,gamma) MultiplicativePermanentIncomeShocks_ReturnFn(aprime,a,psi,theta,R,g,gamma)
+ReturnFnParamNames={'R','g','gamma'};
+
+%% Do the value function iteration
+vfoptions.verbose=1;
+V0=zeros(n_a,n_z(1),n_z(2),'gpuArray');
+[V, Policy]=ValueFnIter_Case1(V0, 0,n_a,n_z,0,a_grid,z_grid, pi_z, ReturnFn, Params, DiscountFactorParamNames, ReturnFnParamNames, vfoptions);
+
+
+%% Some further comments on this setup, not needed for computations above, but may be of interest
+%
+% We have here solved the renormalized value function. The VFI Toolkit
+% codes for computing the stationary distribution of agents and the general
+% equilibrium could also be used to find the normalized solutions. The time
+% series simulations could then be used, and since they would
+% automatically include simulated values for the $\psi$ and $\theta$
+% shocks, and since $g$ is known, it would be trivial to generate
+% versions of this that did not include the normalization (that is, e.g.,
+% simulated time series data for the original model); in fact, judicious
+% definition of the variables to simulate would do this directly.
+%
+% The actual distributions of $\psi_t$ and $\hat{\theta}_t$ are
+% unimportant, but that $E[\psi_t]=1$ and $E[\theta_t]=1$ are important. As
+% is that the supports of both $\psi_t$ and $\theta_t$ are bounded (untrue
+% in principle of the log-normal, but we will use quadrature, so will be
+% true in actual computed example). Notice that both of these shocks are
+% normalized so the mean equals one assumptions are made without loss of
+% generalization (the mean of $\psi_t$ could be moved to $g$, and of $\theta$ could be moved into $P$). 
+% It is needed for the underlying theory in Carroll (2019).
+%
+% While the model is here solved as having three states (one endogeneous
+% state a, and two exogenous states $\psi$ and $\theta$) in principle you
+% can rewrite the problem as having a single state (the buffer savings
+% stock), and from the perspective of deriving theoretical results this is
+% useful and is the approach taken in Carroll (2019). From the perspective
+% of solving the model using the VFI Toolkit it is much easier to impose
+% the clear distinction between exogenous and endogenous variables. Adding
+% further complications to the model would also break the ability to reduce
+% the model to a single state (the buffer savings stock), and so
+% distinguising them as done here would then become necessary.
+%
+%
+
+##### SOURCE END #####
+--></body></html>
